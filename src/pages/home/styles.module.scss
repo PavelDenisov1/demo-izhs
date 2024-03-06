@@ -1,0 +1,187 @@
+.pointer {
+    cursor: pointer;
+    user-select: none;
+}
+.active {
+    background-color: rgba(255, 255, 255, 0.479);
+    border-radius: 20px;
+}
+.contentContainer {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+.buttonTextPadding {
+    padding: 0 15px;
+}
+
+.topButton, .mapButton {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: max(2.2vmin, 16px);
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-align: center;
+}
+
+.topButton {
+    text-wrap: nowrap;
+    max-width: 100%;
+    width: 250px;
+    height: 80px;
+    position: absolute;
+    margin-left: 50%;
+    transform: translate(-50%, 0);
+    background-color: #111111;
+    border-radius: 0 0 16px 16px;
+    transition: all 1s;
+    z-index: 5;
+}
+
+.topButtonInMap {
+    margin-left: 0%;
+    transform: translate(0, 0);
+    width: 340px;
+    height: 100px;
+}
+
+.infoContainer,
+.blockMap,
+.title {
+    max-width: 75%;
+    margin-left: 12.5%;
+}
+
+.title {
+    font-family: 'Merriweather';
+    font-size: max(6.5vmin, 25px);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    text-align: center;
+    padding-top: 140px;
+    transition:  max-height 1.5s, padding 1s;
+    max-height: 1000px;
+    overflow: hidden;
+}
+
+.titleNone {
+    max-height: 0;
+    padding: 0 !important;
+}
+
+.blockMap {
+    margin-top: 40px;
+    border-radius: 130px/105px;
+    height: 225px;
+    max-width: min(1080px,75%);
+    position: relative;
+    transition: all 1.5s;
+    overflow: hidden;
+}
+
+.blockMapOpened {
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    margin: 0;
+    border-radius: 0;
+    z-index: 1;
+}
+
+.mapButton {
+    position: absolute;
+    border-radius: 25px;
+    height: 50px;
+    background-color: rgba(70, 64, 222, 1);
+    width: min(70%, 400px);
+    left: 50%;
+    bottom: 10%;
+    transform: translate(-50%,0);
+    transition: all 1s, bottom 1.5s;
+    cursor: pointer;
+    z-index: 5;
+
+}
+
+.mapButtonOpened {
+    bottom: calc(100vh - 75px);
+    transform: translate(0,0);
+    left: 370px;
+}
+
+.infoContainer {
+    display: flex;
+    flex-wrap:wrap;
+    justify-content: center;
+    align-items: center;
+    max-height: 1000px;
+    overflow: hidden;
+    transition: all 1s;
+}
+.infoContainerNone {
+    max-height: 0px;
+}
+
+.block {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Poppins', sans-serif;
+    margin-right: 30px;
+    max-width: 300px;
+}
+.blockUpperText {
+    font-size: 15px;
+    color: rgba(70, 64, 222, 1);
+    font-weight: 700;
+}
+.blockTitle {
+    font-size: max(2.5vmin, 20px);
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+.blockText {
+    font-size: max(1vmin, 14px);
+    font-weight: 400;
+}
+
+@media (max-width: 1000px) {
+    
+    .infoContainer {
+        flex-direction: column;
+        flex-wrap:nowrap;
+    }
+
+    .mapButton {
+        bottom: 50%;
+        transform: translate(-50%,50%);
+    }
+
+    .mapButtonOpened {
+        bottom: 10%; 
+        left: 50%;
+        transform: translate(-50%,50%);
+    }
+}
+
+@media (max-width: 500px) {
+
+    .topButton {
+        width: 100%;
+        transition: width 1.5s;
+    }
+
+    .title {
+        padding-top: 120px;
+    }
+
+    .topButtonInMap {
+        margin-left: 0%;
+        height: 80px;
+    }
+
+}
