@@ -53,7 +53,11 @@ export const LayersFilter = (props: { setOpened: { opened: boolean, click: React
       {buttonsArray.map((button, i) => {
         return <p key={i + 'button'} onClick={() => {
           const newArr = [...buttonsArray];
-          newArr[i].on = !button.on
+          newArr.forEach((layer, i2)=>{
+            if (i===i2) layer.on = !button.on
+            else layer.on = false
+          })
+          // newArr[i].on = !button.on
           SetButtonsArray(newArr)
         }}
           className={classNames.filtersButton + ' ' + (button.on ? classNames.active : '')}>{button.name}</p>

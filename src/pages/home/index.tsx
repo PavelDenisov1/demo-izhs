@@ -20,6 +20,7 @@ interface Layerfilters {
 export const Home = () => {
   // const isMobile = useContext(DeviceContext).mobile
   const [mapOpened, SetMapOpened] = useState(false)
+  const [drawEnabled, SetDrawEnabled] = useState(false)
   const [onLayers, SetOnLayers] = useState<Layerfilters>({
     regions: true,
     municipals: false,
@@ -60,6 +61,7 @@ export const Home = () => {
           {mapOpened ? <img src={BackIcon} className={classNames.pointer} alt="back button"
             onClick={() => {
               SetMapOpened(false)
+              SetDrawEnabled(false)
             }} /> : ''}
           <p className={classNames.buttonTextPadding}>ИЖС не на кадастре</p>
           {mapOpened ? <img src={FilterIcon} className={classNames.pointer + (filtersActive.opened?(' '+classNames.active):'')} alt="filter button" onClick={(e) => {
@@ -75,12 +77,18 @@ export const Home = () => {
         <div id='blockMap' className={classNames.blockMap}>
           <div id="mapButton" className={classNames.mapButton}
             onClick={() => {
-              !mapOpened && SetMapOpened(true)
+              if (!mapOpened) {
+                SetMapOpened(true)
+              }
+              else {
+                if (!drawEnabled) SetDrawEnabled(true)
+                else SetDrawEnabled(false)
+              }
             }}
           >
-            <p className={classNames.buttonTextPadding}>{mapOpened ? 'Нарисовать фигуру' : 'Проверить вашу территорию'}</p>
+            <p className={classNames.buttonTextPadding}>{mapOpened ? (drawEnabled?'Прекратить рисование':'Нарисовать фигуру') : 'Проверить вашу территорию'}</p>
           </div>
-          <MapModule onLayers={onLayers}/>
+          <MapModule onLayers={onLayers} mapOpened={mapOpened} drawEnabled={drawEnabled}/>
         </div>
         <LayersFilter setOpened={filtersActive} layersActive={onLayers} setActive={setNewActiveArray}/>
         <div id='infoContainer' className={classNames.infoContainer}>
