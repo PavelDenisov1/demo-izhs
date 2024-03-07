@@ -6,7 +6,6 @@ import OSM from 'ol/source/OSM';
 import 'ol/ol.css';
 import { getMvtLayers } from './../../../shared/MvtLogicFunctios';
 import Draw from 'ol/interaction/Draw';
-import Select from 'ol/interaction/Select';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import Style from 'ol/style/Style';
@@ -14,7 +13,6 @@ import Stroke from 'ol/style/Stroke';
 import Fill from 'ol/style/Fill';
 import RegularShape from 'ol/style/RegularShape';
 import Interaction from 'ol/interaction/Interaction';
-import { getWidth } from 'ol/extent.js';
 
 interface Layerfilters {
   regions: boolean,
@@ -40,7 +38,7 @@ export const MapModule = (props: { onLayers: Layerfilters, mapOpened: boolean, d
 
   let remove = (map: Map, name: string) => {
     map && map?.getLayers().getArray().forEach(layer => {
-      
+
       if (layer.get('name') === name) {
         map.removeLayer(layer)
         console.log(layer.get('name'), name, map.getAllLayers())
@@ -66,6 +64,7 @@ export const MapModule = (props: { onLayers: Layerfilters, mapOpened: boolean, d
       // mapRef.current.removeInteraction(draw)
       props.drawEnabled ? mapRef.current?.addInteraction(draw) : stopDrawing(draw, drawLayer)
     }
+    // eslint-disable-next-line
   }, [props.drawEnabled])
 
   useEffect(() => {
@@ -91,7 +90,6 @@ export const MapModule = (props: { onLayers: Layerfilters, mapOpened: boolean, d
   useEffect(() => {
     async function getAsyncTiles() {
       let tilesArray = await getMvtLayers()
-      let arr:Array<any> = []
       tilesArray.forEach(tile => {
 
         switch (tile.get('name')) {

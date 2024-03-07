@@ -7,10 +7,6 @@ import { MapModule } from "../../features/map/ui";
 import { LayersFilter } from "../../features/layers-filter";
 
 
-interface OpemedFilters {
-  opened: boolean, 
-  click: React.MouseEvent<HTMLElement>|undefined
-}
 interface Layerfilters {
   regions: boolean,
   municipals: boolean,
@@ -26,23 +22,11 @@ export const Home = () => {
     municipals: false,
     settlement: false,
   })
-  const [filtersActive, SetfiltersActive] = useState<OpemedFilters>({opened: false,click: undefined })
-
-
-  // useEffect(() => {
-  //   console.log(onLayers)
-  // }, [onLayers])
+  const [filtersActive, SetfiltersActive] = useState<boolean>(false)
   
   function setNewActiveArray(layers:Layerfilters){
     SetOnLayers(layers)
   }
-  // const [click, setClick] = useState<MouseEvent>()
-  // useEffect(() => {
-  //   window.addEventListener('click', (e)=>setClick(e))
-  //   return () => {
-  //     window.removeEventListener('click', (e)=>setClick(e))
-  //   }
-  // }, [])
 
   useEffect(() => {
 
@@ -64,12 +48,8 @@ export const Home = () => {
               SetDrawEnabled(false)
             }} /> : ''}
           <p className={classNames.buttonTextPadding}>ИЖС не на кадастре</p>
-          {mapOpened ? <img src={FilterIcon} className={classNames.pointer + (filtersActive.opened?(' '+classNames.active):'')} alt="filter button" onClick={(e) => {
-            SetfiltersActive({
-              opened: !filtersActive.opened,
-              click: e
-            })
-
+          {mapOpened ? <img src={FilterIcon} id='FilterIcon' className={classNames.pointer + (filtersActive?(' '+classNames.active):'')} alt="filter button" onClick={(e) => {
+            SetfiltersActive(!filtersActive)
           }}
           /> : ''}
         </div>
@@ -79,6 +59,7 @@ export const Home = () => {
             onClick={() => {
               if (!mapOpened) {
                 SetMapOpened(true)
+                setTimeout(()=>SetfiltersActive(true), 1500)
               }
               else {
                 if (!drawEnabled) SetDrawEnabled(true)
