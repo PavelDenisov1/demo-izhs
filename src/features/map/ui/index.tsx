@@ -20,7 +20,7 @@ interface Layerfilters {
   settlement: boolean,
 }
 
-export const MapModule = (props: { onLayers: Layerfilters, mapOpened: boolean, drawEnabled: boolean, setInfoBlock: Function }) => {
+export const MapModule = (props: { onLayers: Layerfilters, mapOpened: boolean, drawEnabled: boolean, setInfoBlock: Function, setContactState: Function }) => {
   const mapElement = React.useRef<HTMLInputElement>(null)
   const mapRef = useRef<Map>();
   const [tiles, setTiles] = useState<any>({
@@ -184,6 +184,7 @@ export const MapModule = (props: { onLayers: Layerfilters, mapOpened: boolean, d
         })
       });
       draw.on('drawend', function (e) {
+        props.setContactState(true)
         // const boxExtent = e.feature.getGeometry()?.getExtent();
         // console.log(boxExtent, e)
         // let arrayLayer = mapRef.current?.getAllLayers()

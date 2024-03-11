@@ -4,7 +4,7 @@ import { Feature } from "ol"
 import Exit from '../../../shared/icons/exitCross.svg'
 import Doc from '../../../shared/icons/docImage.svg'
 
-export const FeatureInfo = (props: { info: { opened: boolean, feature: Feature | null } | null }) => {
+export const FeatureInfo = (props: { info: { opened: boolean, feature: Feature | null } | null, setContactState: Function }) => {
 
   const [infoArray, SetInfoArray] = useState<Array<{ name: string, num: number|string }> | undefined>()
   const [territoryName, SetTerritoryName] = useState<String>('')
@@ -49,7 +49,7 @@ export const FeatureInfo = (props: { info: { opened: boolean, feature: Feature |
             <p className={classNames.infoTitle}>Выбраная область</p>
             <p className={classNames.cityTitle}> {territoryName}</p>
           </div>
-          <div className={classNames.infoButtons}><p className={classNames.save}>Скачать</p><img className={classNames.exit} alt="close icon" src={Exit} onClick={() => SetOpened(false)} /></div>
+          <div className={classNames.infoButtons}><p onClick={()=>props.setContactState(true)} className={classNames.save}>Скачать</p><img className={classNames.exit} alt="close icon" src={Exit} onClick={() => SetOpened(false)} /></div>
         </div>
       }
       

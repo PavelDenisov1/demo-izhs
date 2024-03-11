@@ -7,6 +7,7 @@ import { MapModule } from "../../features/map/ui";
 import { LayersFilter } from "../../features/layers-filter";
 import { FeatureInfo } from "../../features/feature-info";
 import { Feature } from "ol";
+import { GetContact } from "../../features/get-contact";
 
 
 interface Layerfilters {
@@ -19,6 +20,8 @@ export const Home = () => {
   // const isMobile = useContext(DeviceContext).mobile
   const [mapOpened, SetMapOpened] = useState(false)
   const [drawEnabled, SetDrawEnabled] = useState(false)
+  const [contactOpened, SetContactOpened] = useState(false)
+  
   const [onLayers, SetOnLayers] = useState<Layerfilters>({
     regions: true,
     municipals: false,
@@ -33,6 +36,14 @@ export const Home = () => {
 
   function setObjectClick(feature:Feature|null){
     SetObjectClick({opened: true, feature: feature})
+  }
+
+
+  function setContactState(state:boolean){
+    SetfiltersActive(false)
+    SetDrawEnabled(false)
+    SetObjectClick(null)
+    SetContactOpened(state)
   }
 
   useEffect(() => {
@@ -71,6 +82,7 @@ export const Home = () => {
                 setTimeout(()=>SetfiltersActive(true), 1500)
               }
               else {
+                SetContactOpened(false)
                 if (!drawEnabled) {
                   SetOnLayers({
                     regions: false,
@@ -89,7 +101,7 @@ export const Home = () => {
           >
             <p className={classNames.buttonTextPadding}>{mapOpened ? (drawEnabled?'Прекратить рисование':'Нарисовать фигуру') : 'Проверить вашу территорию'}</p>
           </div>
-          <MapModule onLayers={onLayers} mapOpened={mapOpened} drawEnabled={drawEnabled} setInfoBlock={setObjectClick}/>
+          <MapModule onLayers={onLayers} mapOpened={mapOpened} drawEnabled={drawEnabled} setInfoBlock={setObjectClick} setContactState={setContactState}/>
         </div>
         <LayersFilter setOpened={filtersActive} layersActive={onLayers} setActive={setNewActiveArray}/>
         <div id='infoContainer' className={classNames.infoContainer}>
@@ -102,7 +114,8 @@ export const Home = () => {
           })
           }
         </div>
-        <FeatureInfo info={objectClick}/>
+        <FeatureInfo info={objectClick} setContactState={setContactState}/>
+        <GetContact opened={contactOpened} setContactState={setContactState}/>
       </div>
     </>
   );

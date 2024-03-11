@@ -1,0 +1,63 @@
+.contact {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -70%);
+    width: min(90%, 450px);
+    height: 270px;
+    background-color: white;
+    z-index: 7;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    padding: 0px 15px 0px 15px;
+}
+.contactTitle {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: max(2.5vmin, 16px);
+}
+.formContainer {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: max(1.5vmin, 14px);
+    margin-top: 35px;
+}
+
+.send {
+    background-color: rgb(70, 64, 222);
+    height: 40px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    font-weight: 600;
+    margin-top: 15px;
+    cursor: pointer;
+}
+.inputContainer {
+    width: 100%;
+    height: 35px;
+    margin-top: 10px;
+    position: relative;
+}
+.input {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    border: 2px solid lightgray;
+    box-sizing: border-box;
+    padding: 0 10px 0 40px;
+}
+.user {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translate(50%, -50%);
+}
+@media (max-width: 700px) {
+}
