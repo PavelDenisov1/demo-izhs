@@ -1,17 +1,29 @@
 .filters {
     position: absolute;
     left: 1%;
-    width: min(435px, 98%);
+    width: min(460px, 98%);
     height: 100px;
     border-radius: 40px/40px;
     background-color: white;
     top: 100px;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: center;
-    align-items: center;
-    z-index: 5;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    -ms-flex-wrap: nowrap;
+        flex-wrap: nowrap;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    z-index: 6;
+    -webkit-box-shadow: 11px 10px 7px -3px rgba(0,0,0,0.1);
+    box-shadow: 11px 10px 7px -3px rgba(0,0,0,0.1);
 }
 
 .filtersButton {
@@ -20,7 +32,9 @@
     background-color: rgb(235, 235, 239);
     cursor: pointer;
     -webkit-user-select: none;
-    user-select: none;
+    -moz-user-select: none;
+     -ms-user-select: none;
+         user-select: none;
     border-radius: 20px;
     padding: 15px;
     margin-right: 10px;
@@ -41,7 +55,9 @@
     border-left: 20px solid transparent;
     border-right: 20px solid transparent;
     border-bottom: 25px solid white;
-    transform: translate(-50%, 50%);
+    -webkit-transform: translate(-50%, 50%);
+        -ms-transform: translate(-50%, 50%);
+            transform: translate(-50%, 50%);
 }
 
 .triangle::after {
@@ -54,7 +70,9 @@
     z-index: 5;
     top: 6px;
     left: -34px;
-    transform: rotate(63deg);
+    -webkit-transform: rotate(63deg);
+        -ms-transform: rotate(63deg);
+            transform: rotate(63deg);
 }
 
 .triangle::before {
@@ -67,13 +85,22 @@
     z-index: 5;
     top: 6px;
     left: 9px;
-    transform: rotate(-243deg);
+    -webkit-transform: rotate(-243deg);
+        -ms-transform: rotate(-243deg);
+            transform: rotate(-243deg);
 }
 
-
+@media (max-width: 700px) {
+    .filters {
+        left: 8%;
+    }
+}
 @media (max-width: 500px) {
     .filtersButton {
         max-width: 30%;
         font-size: 3.5vmin;
+    }
+    .filters {
+        left: 1%;
     }
 }

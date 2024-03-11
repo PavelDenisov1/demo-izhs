@@ -1,0 +1,99 @@
+.infoContainer {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 0;
+    transition: all 1.8s;
+    height: fit-content;
+    overflow-y: hidden;
+    text-wrap: nowrap;
+    z-index: 5;
+    background-color: white;
+}
+.infoElement, .cityElement {
+    width: 100%;
+    height: 90px;
+    color: black;
+    padding: 0px 0px 10px 15px;
+    border-top: 1px solid lightgray;
+    position: relative;
+}
+
+.titleContainer {
+    display: flex;
+    flex-direction: row;
+}
+
+.cityElement {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+    height: 70px;
+}
+
+.save {
+    height: 30px;
+    width: 110px;
+    background-color: blue;
+    color: white;
+    margin-right: 10px;
+    text-align: center;
+    padding-top: 10px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+.exit {
+    cursor: pointer;
+}
+.infoButtons {    
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding-right: 10px;
+    border-top: 1px solid lightgray;
+}
+.infoText {
+    font-family: 'Epilogue', sans-serif;
+    font-weight: 700;
+    font-size: max(5vmin, 30px);
+}
+.cityTitle {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: max(1.3vmin, 10px);
+    text-wrap: balance;
+}
+.infoTitle {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: max(2.3vmin, 16px);
+}
+.docIcon {
+    position: absolute;
+    right: 45px;
+    bottom: 0;
+    opacity: 1;
+    transition: all 1.5s;
+}
+.opened {
+    width: min(50%, 400px);
+}
+.noneOpacity {
+    opacity: 0;
+}
+
+@media (max-width: 700px) {
+    .infoContainer {
+        bottom: 0;
+        top: unset;
+        left: 5%;
+        width: 90%;
+        max-height: 0;
+    }
+
+    .opened {
+        max-height: 90%;
+    }
+}

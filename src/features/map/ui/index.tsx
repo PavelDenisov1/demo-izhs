@@ -20,7 +20,7 @@ interface Layerfilters {
   settlement: boolean,
 }
 
-export const MapModule = (props: { onLayers: Layerfilters, mapOpened: boolean, drawEnabled: boolean }) => {
+export const MapModule = (props: { onLayers: Layerfilters, mapOpened: boolean, drawEnabled: boolean, setInfoBlock: Function }) => {
   const mapElement = React.useRef<HTMLInputElement>(null)
   const mapRef = useRef<Map>();
   const [tiles, setTiles] = useState<any>({
@@ -31,17 +31,10 @@ export const MapModule = (props: { onLayers: Layerfilters, mapOpened: boolean, d
   const [draw, setDraw] = useState<Interaction | undefined>()
   const [drawLayer, setDrawLayer] = useState<VectorLayer<VectorSource> | undefined>()
 
-  useEffect(() => {
-    console.log(draw)
-  }, [draw])
-
-
   let remove = (map: Map, name: string) => {
     map && map?.getLayers().getArray().forEach(layer => {
-
       if (layer.get('name') === name) {
         map.removeLayer(layer)
-        console.log(layer.get('name'), name, map.getAllLayers())
       }
     })
   }
@@ -88,37 +81,35 @@ export const MapModule = (props: { onLayers: Layerfilters, mapOpened: boolean, d
   }, [tiles, props, mapRef])
 
   useEffect(() => {
-    async function getAsyncTiles() {
-      let tilesArray = await getMvtLayers()
-      tilesArray.forEach(tile => {
+    let tilesArray = getMvtLayers()
+    tilesArray.forEach(tile => {
 
-        switch (tile.get('name')) {
-          case 'RN_1_143':
-            tiles.vectorLayerRegions = tile
-            tile.setZIndex(5)
-            break;
+      switch (tile.get('name')) {
+        case 'RN_1_143':
+          tiles.vectorLayerRegions = tile
+          tile.setZIndex(5)
+          break;
 
-          case 'RN_1_144':
-            tiles.vectorLayerMunicipals = tile
-            tile.setZIndex(5)
-            break;
+        case 'RN_1_144':
+          tiles.vectorLayerMunicipals = tile
+          tile.setZIndex(5)
+          break;
 
-          case 'RN_1_145':
-            tiles.vectorLayerSettlement = tile
-            tile.setZIndex(5)
-            break;
+        case 'RN_1_145':
+          tiles.vectorLayerSettlement = tile
+          tile.setZIndex(5)
+          break;
 
-          default:
-            break;
-        }
+        default:
+          break;
+      }
 
-        setTiles(tiles)
+      setTiles(tiles)
 
-      })
-    }
-    getAsyncTiles()
+    })
 
-  }, [tiles, props.onLayers])
+  // eslint-disable-next-line
+  }, [])
 
   useEffect(() => {
 
@@ -154,9 +145,21 @@ export const MapModule = (props: { onLayers: Layerfilters, mapOpened: boolean, d
           center: [5346197.040548416, 7470999.886310182],
           zoom: 6,
         })
-
       });
-      mapRef.current.addEventListener('click', (e) => console.log(e))
+
+      mapRef.current.addEventListener('click', (e: any) => {
+        
+        let drawing = false
+        
+          e.map.getInteractions().getArray().forEach((inter:any) => {
+            if(inter.get('name')==='draw') drawing = true
+          });
+        if (!drawing) {
+          const pixel = e.map.getEventPixel(e.originalEvent);
+          let features = e.map.getFeaturesAtPixel(pixel);
+          if (features.length === 1) props.setInfoBlock(features[0])
+        }
+      })
 
       let draw = new Draw({
         source: sourceDraw,
@@ -183,14 +186,16 @@ export const MapModule = (props: { onLayers: Layerfilters, mapOpened: boolean, d
       draw.on('drawend', function (e) {
         // const boxExtent = e.feature.getGeometry()?.getExtent();
         // console.log(boxExtent, e)
-        let arrayLayer = mapRef.current?.getAllLayers()
-        arrayLayer?.forEach((layer) => {
-          //@ts-ignore
-          console.log(layer.getSource() && layer.getSource()?.getFeaturesInExtent && layer.getSource().getFeaturesInExtent(e.feature.getGeometry()?.getExtent()))
-          console.log(e.feature.getGeometry()?.getExtent(), layer.getSource()?.getProjection(), mapRef.current?.getView().getProjection())
-        })
+        // let arrayLayer = mapRef.current?.getAllLayers()
+        // arrayLayer?.forEach((layer) => {
+        //   //@ts-ignore
+        //   console.log(layer.getSource() && layer.getSource()?.getFeaturesInExtent && layer.getSource().getFeaturesInExtent(e.feature.getGeometry()?.getExtent()))
+        //   // console.log(e.feature.getGeometry()?.getExtent(), layer.getSource()?.getProjection(), mapRef.current?.getView().getProjection())
 
-        console.log(e)
+        //   //@ts-ignore
+        //   layer.getSource && layer.getSource().getFeatures && console.log(layer.getSource()?.getFeatures(), layer.get('name'))
+        // })
+
 
         // var features = e.target.getSource().getFeaturesInExtent(e.feature.getGeometry()?.getExtent()); console.log(features)
         // console.log(features)
@@ -199,19 +204,20 @@ export const MapModule = (props: { onLayers: Layerfilters, mapOpened: boolean, d
       });
 
       draw.on('drawstart', function (e) {
-        console.log(e)
+        console.log(e, vectorDraw)
+        sourceDraw && sourceDraw.clear()
       });
 
-
-
+      draw.set('name', 'draw')
       setDraw(draw)
       setDrawLayer(vectorDraw)
     }
+   //eslint-disable-next-line
   }, [mapElement, mapRef]);
 
 
   return (
-    <div ref={mapElement} className={classNames.map} />
+    <div ref={mapElement} style={{pointerEvents: props.mapOpened?'unset':'none'}} className={classNames.map} />
   );
 
 }

@@ -5,6 +5,8 @@ import BackIcon from './../../shared/icons/Back.svg'
 import FilterIcon from '../../shared/icons/Filter.svg'
 import { MapModule } from "../../features/map/ui";
 import { LayersFilter } from "../../features/layers-filter";
+import { FeatureInfo } from "../../features/feature-info";
+import { Feature } from "ol";
 
 
 interface Layerfilters {
@@ -23,9 +25,14 @@ export const Home = () => {
     settlement: false,
   })
   const [filtersActive, SetfiltersActive] = useState<boolean>(false)
+  const [objectClick, SetObjectClick] = useState<{opened: boolean, feature: Feature|null}|null>(null)
   
   function setNewActiveArray(layers:Layerfilters){
     SetOnLayers(layers)
+  }
+
+  function setObjectClick(feature:Feature|null){
+    SetObjectClick({opened: true, feature: feature})
   }
 
   useEffect(() => {
@@ -45,7 +52,9 @@ export const Home = () => {
           {mapOpened ? <img src={BackIcon} className={classNames.pointer} alt="back button"
             onClick={() => {
               SetMapOpened(false)
+              SetfiltersActive(false)
               SetDrawEnabled(false)
+              SetObjectClick(null)
             }} /> : ''}
           <p className={classNames.buttonTextPadding}>ИЖС не на кадастре</p>
           {mapOpened ? <img src={FilterIcon} id='FilterIcon' className={classNames.pointer + (filtersActive?(' '+classNames.active):'')} alt="filter button" onClick={(e) => {
@@ -62,14 +71,25 @@ export const Home = () => {
                 setTimeout(()=>SetfiltersActive(true), 1500)
               }
               else {
-                if (!drawEnabled) SetDrawEnabled(true)
-                else SetDrawEnabled(false)
+                if (!drawEnabled) {
+                  SetOnLayers({
+                    regions: false,
+                    municipals: false,
+                    settlement: false,
+                  })
+
+                  SetDrawEnabled(true)
+                  SetfiltersActive(false)
+                }
+                else {
+                  SetDrawEnabled(false)
+                }
               }
             }}
           >
             <p className={classNames.buttonTextPadding}>{mapOpened ? (drawEnabled?'Прекратить рисование':'Нарисовать фигуру') : 'Проверить вашу территорию'}</p>
           </div>
-          <MapModule onLayers={onLayers} mapOpened={mapOpened} drawEnabled={drawEnabled}/>
+          <MapModule onLayers={onLayers} mapOpened={mapOpened} drawEnabled={drawEnabled} setInfoBlock={setObjectClick}/>
         </div>
         <LayersFilter setOpened={filtersActive} layersActive={onLayers} setActive={setNewActiveArray}/>
         <div id='infoContainer' className={classNames.infoContainer}>
@@ -82,6 +102,7 @@ export const Home = () => {
           })
           }
         </div>
+        <FeatureInfo info={objectClick}/>
       </div>
     </>
   );

@@ -14,21 +14,38 @@ export const LayersFilter = (props: { setOpened: boolean, layersActive: LayersAc
   const [buttonsArray, SetButtonsArray] = useState([
     {
       name: 'Регионы',
-      on: props.layersActive.regions
+      on: false
     },
     {
       name: 'Муниципалитеты',
-      on: props.layersActive.municipals
+      on: false
     },
     {
       name: 'Поселения',
-      on: props.layersActive.settlement
+      on: false
     }
   ])
-  useEffect(() => {
-    let newLayerFilter: LayersActive = Object.assign({}, props.layersActive)
-    buttonsArray.forEach((layer) => {
 
+  useEffect(() => {
+    SetButtonsArray([
+      {
+        name: 'Регионы',
+        on: props.layersActive.regions
+      },
+      {
+        name: 'Муниципалитеты',
+        on: props.layersActive.municipals
+      },
+      {
+        name: 'Поселения',
+        on: props.layersActive.settlement
+      }
+    ])
+  }, [props.layersActive])
+
+  let setNewProps = (array:Array<any>) => {
+    let newLayerFilter: LayersActive = Object.assign({}, props.layersActive)
+    array.forEach((layer) => {
       switch (layer.name) {
         case 'Регионы':
           newLayerFilter.regions = layer.on
@@ -43,11 +60,9 @@ export const LayersFilter = (props: { setOpened: boolean, layersActive: LayersAc
         default:
           break;
       }
-
     })
     props.setActive(newLayerFilter)
-    // eslint-disable-next-line
-  }, [buttonsArray])
+  }
 
   useEffect(() => {
     let icon = document.getElementById('FilterIcon')
@@ -68,7 +83,7 @@ export const LayersFilter = (props: { setOpened: boolean, layersActive: LayersAc
                 if (i === i2) layer.on = !button.on
                 else layer.on = false
               })
-              SetButtonsArray(newArr)
+              setNewProps(newArr)
             }}
               className={classNames.filtersButton + ' ' + (button.on ? classNames.active : '')}>{button.name}</p>
           })
