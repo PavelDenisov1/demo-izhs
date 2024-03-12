@@ -188,20 +188,6 @@ export const MapModule = (props: { onLayers: Layerfilters, mapOpened: boolean, d
         // const boxExtent = e.feature.getGeometry()?.getExtent();
         // console.log(boxExtent, e)
         // let arrayLayer = mapRef.current?.getAllLayers()
-        // arrayLayer?.forEach((layer) => {
-        //   //@ts-ignore
-        //   console.log(layer.getSource() && layer.getSource()?.getFeaturesInExtent && layer.getSource().getFeaturesInExtent(e.feature.getGeometry()?.getExtent()))
-        //   // console.log(e.feature.getGeometry()?.getExtent(), layer.getSource()?.getProjection(), mapRef.current?.getView().getProjection())
-
-        //   //@ts-ignore
-        //   layer.getSource && layer.getSource().getFeatures && console.log(layer.getSource()?.getFeatures(), layer.get('name'))
-        // })
-
-
-        // var features = e.target.getSource().getFeaturesInExtent(e.feature.getGeometry()?.getExtent()); console.log(features)
-        // console.log(features)
-        // if the extent crosses the antimeridian process each world separately
-
       });
 
       draw.on('drawstart', function (e) {

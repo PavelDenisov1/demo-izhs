@@ -49,7 +49,7 @@ export const FeatureInfo = (props: { info: { opened: boolean, feature: Feature |
             <p className={classNames.infoTitle}>Выбранная территория</p>
             <p className={classNames.cityTitle}> {territoryName}</p>
           </div>
-          <div className={classNames.infoButtons}><p onClick={()=>props.setContactState(true)} className={classNames.save}>Отчет</p><img className={classNames.exit} alt="close icon" src={Exit} onClick={() => SetOpened(false)} /></div>
+          <div className={classNames.infoButtons}><p onClick={()=>props.setContactState(true, territoryName)} className={classNames.save}>Отчет</p><img className={classNames.exit} alt="close icon" src={Exit} onClick={() => SetOpened(false)} /></div>
         </div>
       }
       

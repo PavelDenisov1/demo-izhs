@@ -20,7 +20,7 @@ export const Home = () => {
   // const isMobile = useContext(DeviceContext).mobile
   const [mapOpened, SetMapOpened] = useState(false)
   const [drawEnabled, SetDrawEnabled] = useState(false)
-  const [contactOpened, SetContactOpened] = useState(false)
+  const [contactOpened, SetContactOpened] = useState<boolean|string>(false)
   
   const [onLayers, SetOnLayers] = useState<Layerfilters>({
     regions: true,
@@ -39,11 +39,11 @@ export const Home = () => {
   }
 
 
-  function setContactState(state:boolean){
+  function setContactState(state:boolean, info: string|undefined){
     SetfiltersActive(false)
     SetDrawEnabled(false)
     SetObjectClick(null)
-    SetContactOpened(state)
+    SetContactOpened(info? info : state)
   }
 
   useEffect(() => {
