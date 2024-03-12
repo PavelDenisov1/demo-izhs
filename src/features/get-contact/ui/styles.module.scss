@@ -30,12 +30,13 @@
 .contactTitle {
     font-family: 'Poppins', sans-serif;
     font-weight: 700;
-    font-size: max(2.5vmin, 18px);
+    font-size: 20px;
+    text-align: center;
 }
 .formContainer {
     font-family: 'Poppins', sans-serif;
     font-weight: 500;
-    font-size: max(1.5vmin, 14px);
+    font-size: 15px;
     margin-top: 35px;
 }
 
@@ -79,4 +80,11 @@
     -webkit-transform: translate(50%, -50%);
         -ms-transform: translate(50%, -50%);
             transform: translate(50%, -50%);
+}
+
+
+@media (max-width: 500px) {
+    .formContainer {
+        font-size: 12px;
+    }
 }
