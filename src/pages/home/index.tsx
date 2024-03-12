@@ -99,7 +99,7 @@ export const Home = () => {
               }
             }}
           >
-            <p className={classNames.buttonTextPadding}>{mapOpened ? (drawEnabled?'Прекратить рисование':'Нарисовать фигуру') : 'Проверить вашу территорию'}</p>
+            <p className={classNames.buttonTextPadding}>{mapOpened ? (drawEnabled?'Прекратить рисование':'Указать территорию') : 'Проверить вашу территорию'}</p>
           </div>
           <MapModule onLayers={onLayers} mapOpened={mapOpened} drawEnabled={drawEnabled} setInfoBlock={setObjectClick} setContactState={setContactState}/>
         </div>
@@ -127,16 +127,16 @@ const textInfos = [
   {
     upper: 'Выгодно',
     title: 'Повышение налогооблагаемой базы',
-    text: 'Regulatory oneven an enterprises such she and the got the did attributing and pushed. We currently have 36 active media campaigns across 24 projects.'
+    text: 'Находим объекты ИЖС, не стоящие на кадастровом учете, засчет которых вы сможете повысить налоговый потенциал своего региона или муниципалитета.'
   },
   {
     upper: 'Эффективно',
-    title: 'Регионы, муниципалитеты, поселения',
-    text: 'A higher spacing and movements through an impactful email campaigns Creating a portfolio budgeting in a real time planning and phasing.'
+    title: 'Данные по вашей территории',
+    text: 'Предоставим готовые наборы данных о подозрительных ИЖС в границах регионов, муниципалитетов и поселений, а так же на произвольную территорию.'
   },
   {
     upper: 'Удобно',
-    title: 'Моментальный отчет с цифрами в деньгах',
-    text: 'Making a shor time up to date email campaings to achieve a real impact.Making a shor time up to date email campaings to achieve a real impact.'
+    title: 'Инструменты для мониторинга',
+    text: 'Кроме набора данных, можем предоставить инструментарий для проведения камеральных и полевых проверок.'
   },
 ]
