@@ -84,18 +84,18 @@
 .infoText {
     font-family: 'Epilogue', sans-serif;
     font-weight: 700;
-    font-size: max(5vmin, 30px);
+    font-size: 40px;
 }
 .cityTitle {
     font-family: 'Poppins', sans-serif;
     font-weight: 500;
-    font-size: max(1.3vmin, 10px);
+    font-size: 15px;
     text-wrap: balance;
 }
 .infoTitle {
     font-family: 'Poppins', sans-serif;
     font-weight: 700;
-    font-size: max(2.3vmin, 16px);
+    font-size: 15px;
 }
 .docIcon {
     position: absolute;
@@ -124,5 +124,15 @@
 
     .opened {
         max-height: 90%;
+    }
+
+    .infoText {
+        font-size: 35px;
+    }
+    .cityTitle {
+        font-size: 12px;
+    }
+    .infoTitle {
+        font-size: 12px;
     }
 }
