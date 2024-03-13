@@ -15,6 +15,18 @@ export const GetContact = (props: { opened: boolean|string, setContactState: Fun
   
   function send() {
     console.log(input)
+    let ya = window.ya
+    ya && ya(96713796, 'getClientID', function (clientID:number) {
+      let link = 'https://rk.geosamara.ru/geosamara-demo-services/1.0.0/contact?metricID='
+      link = link + clientID + '&contact=' + input
+      link = link.replace('@', "%")
+      console.log(clientID, link)
+      fetch(link, {mode: "no-cors",method: 'POST'})
+          .then(r => {
+            console.log('Отправлено'); 
+          })
+    })
+    
     props.setContactState(false)
   }
   
