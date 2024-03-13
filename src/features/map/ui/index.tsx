@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useContext } from 'react';
 import classNames from "./styles.module.scss"
 import { Map, View } from 'ol';
 import TileLayer from 'ol/layer/Tile';
@@ -13,6 +13,11 @@ import Stroke from 'ol/style/Stroke';
 import Fill from 'ol/style/Fill';
 import RegularShape from 'ol/style/RegularShape';
 import Interaction from 'ol/interaction/Interaction';
+import { sendMetricAction } from '../../../shared/MetricApi';
+import { UserContext } from '../../../App';
+import { useParams } from 'react-router-dom';
+import { getCenterCoordinates } from '../../../shared/RKApi';
+import { transform } from 'ol/proj';
 
 interface Layerfilters {
   regions: boolean,
@@ -30,6 +35,9 @@ export const MapModule = (props: { onLayers: Layerfilters, mapOpened: boolean, d
   })
   const [draw, setDraw] = useState<Interaction | undefined>()
   const [drawLayer, setDrawLayer] = useState<VectorLayer<VectorSource> | undefined>()
+  const id = useContext(UserContext).id
+  let { location } = useParams();
+  const [locations, setLocations] = useState<[]|null>(null)
 
   let remove = (map: Map, name: string) => {
     map && map?.getLayers().getArray().forEach(layer => {
@@ -52,6 +60,24 @@ export const MapModule = (props: { onLayers: Layerfilters, mapOpened: boolean, d
     return need
   }
 
+  useEffect(() => {
+    getCenterCoordinates(setLocations)
+  }, [])
+
+  useEffect(() => {
+    if(locations && locations.length>0) {
+      locations.forEach(loc => {
+        //@ts-ignore
+        if (loc.urlpart === location && mapRef.current) {
+          //@ts-ignore
+          mapRef.current.getView().setCenter(transform([loc.lon, loc.lat], 'EPSG:4326', 'EPSG:3857'));
+           //@ts-ignore
+          mapRef.current.getView().setZoom(loc.zoom)
+        }
+      });
+    }
+  }, [locations, location])
+  
   useEffect(() => {
     if (draw) {
       // mapRef.current.removeInteraction(draw)
@@ -107,7 +133,6 @@ export const MapModule = (props: { onLayers: Layerfilters, mapOpened: boolean, d
       setTiles(tiles)
 
     })
-
   // eslint-disable-next-line
   }, [])
 
@@ -138,6 +163,8 @@ export const MapModule = (props: { onLayers: Layerfilters, mapOpened: boolean, d
 
       vectorDraw.set('name', 'draw')
 
+      // console.log(locations, location)
+
       mapRef.current = new Map({
         target: mapElement.current ? mapElement.current : undefined,
         layers: [osmLayer, vectorDraw],
@@ -157,7 +184,12 @@ export const MapModule = (props: { onLayers: Layerfilters, mapOpened: boolean, d
         if (!drawing) {
           const pixel = e.map.getEventPixel(e.originalEvent);
           let features = e.map.getFeaturesAtPixel(pixel);
-          if (features.length === 1) props.setInfoBlock(features[0])
+          if (features.length === 1) {
+            props.setInfoBlock(features[0])
+            let title = ''
+            if(features[0].getGeometry()) title = features[0].getGeometry().getProperties().territory_id
+            id && sendMetricAction(id, 'featureClick', title)
+          }
         }
       })
 
@@ -191,7 +223,6 @@ export const MapModule = (props: { onLayers: Layerfilters, mapOpened: boolean, d
       });
 
       draw.on('drawstart', function (e) {
-        console.log(e, vectorDraw)
         sourceDraw && sourceDraw.clear()
       });
 

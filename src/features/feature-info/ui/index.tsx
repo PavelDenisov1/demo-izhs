@@ -1,14 +1,17 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import classNames from "./styles.module.scss"
 import { Feature } from "ol"
 import Exit from '../../../shared/icons/exitCross.svg'
 import Doc from '../../../shared/icons/docImage.svg'
+import { UserContext } from "../../../App"
+import { sendMetricAction } from "../../../shared/MetricApi"
 
 export const FeatureInfo = (props: { info: { opened: boolean, feature: Feature | null } | null, setContactState: Function }) => {
 
   const [infoArray, SetInfoArray] = useState<Array<{ name: string, num: number|string }> | undefined>()
-  const [territoryName, SetTerritoryName] = useState<String>('')
+  const [territoryName, SetTerritoryName] = useState<string>('')
   const [opened, SetOpened] = useState<boolean>(false)
+  const id = useContext(UserContext).id
   function getRandomArbitrary(min: number, max: number) {
     return (Math.random() * (max - min) + min).toFixed(0);
   }
@@ -18,7 +21,6 @@ export const FeatureInfo = (props: { info: { opened: boolean, feature: Feature |
   }, [props.info])
 
   useEffect(() => {
-    
     document.getElementById('infoFeatureContainer') && (document.getElementById('infoFeatureContainer')!.className = classNames.infoContainer + ' ' + (opened ? classNames.opened : ''))
 
   }, [opened])
@@ -49,10 +51,13 @@ export const FeatureInfo = (props: { info: { opened: boolean, feature: Feature |
             <p className={classNames.infoTitle}>Выбранная территория</p>
             <p className={classNames.cityTitle}> {territoryName}</p>
           </div>
-          <div className={classNames.infoButtons}><p onClick={()=>props.setContactState(true, territoryName)} className={classNames.save}>Отчет</p><img className={classNames.exit} alt="close icon" src={Exit} onClick={() => SetOpened(false)} /></div>
+          <div className={classNames.infoButtons}><p onClick={() => {
+            props.setContactState(true, territoryName)
+            id && sendMetricAction(id, 'saveButtonClick', territoryName)
+          }} className={classNames.save}>Отчет</p><img className={classNames.exit} alt="close icon" src={Exit} onClick={() => SetOpened(false)} /></div>
         </div>
       }
-      
+
       {infoArray?.map((line, i) => {
         return <div key={'line' + i} className={classNames.infoElement}> <p className={classNames.infoTitle}>{line.name}</p> <p className={classNames.infoText}>{line.num}</p><img className={classNames.docIcon  + ' ' + (opened ? '' : classNames.noneOpacity )} src={Doc} alt="decorate icon"/></div>
       })}
