@@ -12,6 +12,20 @@ export const GetContact = (props: { opened: boolean|string, setContactState: Fun
     //@ts-ignore
     if(typeof(props.opened.valueOf())==="string") setName(props.opened.valueOf())
   }, [props.opened])
+
+  useEffect(() => {
+    if(opened) window.addEventListener("click", close)
+    else window.removeEventListener("click", close)
+    function close(e:MouseEvent) {
+      console.log(e)
+      //@ts-ignore
+      if (!e.target?.classList.contains('contactModal')) {
+        props.setContactState(false)
+        window.removeEventListener("click", close)
+      }
+    }
+  }, [opened])
+  
   
   function send() {
     console.log(input)
@@ -31,17 +45,17 @@ export const GetContact = (props: { opened: boolean|string, setContactState: Fun
   }
   
   return <>{
-    opened && <div className={classNames.contact}>
-      <p className={classNames.contactTitle}>Отчет по территории <br/>{name?name:'выбранной на карте'}</p>
-      <div className={classNames.formContainer}>
-        <p>Оставьте свои контакты, мы свяжемся с вами</p>
+    opened && <div className={classNames.contact + ' contactModal'}>
+      <p className={classNames.contactTitle + ' contactModal'}>Отчет по территории <br/>{name?name:'выбранной на карте'}</p>
+      <div className={classNames.formContainer + ' contactModal'}>
+        <p className="contactModal">Оставьте свои контакты, мы свяжемся с вами</p>
 
-        <div className={classNames.inputContainer}>
-          <input className={classNames.input} onChange={(e)=>setInput(e.target.value)} placeholder="Почта или телефон" />
-          <img src={User} className={classNames.user} alt="user icon"/>
+        <div className={classNames.inputContainer + ' contactModal'}>
+          <input className={classNames.input + ' contactModal'} onChange={(e)=> setInput(e.target.value)} placeholder="Почта или телефон" />
+          <img src={User} className={classNames.user + ' contactModal'} alt="user icon"/>
         </div>
 
-        <div className={classNames.send} onClick={()=>send()}> <p>Запросить отчет</p> </div>
+        <div className={classNames.send + ' ' + ((input.length<1)?classNames.nonactive:'') + ' contactModal'} onClick={()=>input.length>0 && send()}> <p>Запросить отчет</p> </div>
       </div>
     </div>}
   </>
