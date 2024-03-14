@@ -17,6 +17,7 @@ export const GetContact = (props: { opened: boolean|string, setContactState: Fun
     setOpened(props.opened)
     //@ts-ignore
     if(typeof(props.opened.valueOf())==="string") setName(props.opened.valueOf())
+    else setName('')
   }, [props.opened])
 
   useEffect(() => {
