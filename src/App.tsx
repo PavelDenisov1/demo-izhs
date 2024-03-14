@@ -19,7 +19,7 @@ export const UserContext = createContext({
 
 const router = createBrowserRouter([
   {
-    path: "/:location?/",
+    path: "/product/izhsnotcadaster/:location?/",
     element: <Home/>,
   },
 ]);

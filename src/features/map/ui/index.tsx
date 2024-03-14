@@ -87,7 +87,7 @@ export const MapModule = (props: { onLayers: Layerfilters, setMapOpened:Function
     if(featureClicked && locations) {
       locations.forEach(loc => {
          //@ts-ignore
-        if(loc.name===featureClicked.getGeometry().getProperties().territory_id) navigate('/'+loc.urlpart+'/')
+        if(loc.name===featureClicked.getGeometry().getProperties().territory_id) navigate('/product/izhsnotcadaster/'+loc.urlpart+'/')
         // console.log(loc.name)
       })
     }
