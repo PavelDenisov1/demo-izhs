@@ -46,6 +46,29 @@ export const Home = () => {
     SetContactOpened(info? info : state)
   }
 
+  function mapButtonClick(block:boolean = false) {
+    if (!mapOpened || (block && !mapOpened)) {
+      SetMapOpened(true)
+      setTimeout(()=>SetfiltersActive(true), 1500)
+    }
+    else if(!block){
+      SetContactOpened(false)
+      if (!drawEnabled) {
+        SetOnLayers({
+          regions: false,
+          municipals: false,
+          settlement: false,
+        })
+
+        SetDrawEnabled(true)
+        SetfiltersActive(false)
+      }
+      else {
+        SetDrawEnabled(false)
+      }
+    }
+  }
+
   useEffect(() => {
 
     document.getElementById('topButton')!.className = classNames.topButton + ' ' + (mapOpened ? classNames.topButtonInMap : '')
@@ -74,29 +97,14 @@ export const Home = () => {
           /> : ''}
         </div>
         <div id='title' className={classNames.title}><p>Повышаем собираемость <br /> земельного налога</p></div>
-        <div id='blockMap' className={classNames.blockMap}>
+        <div id='blockMap' className={classNames.blockMap}
+          onClick={() => {
+            mapButtonClick(true)
+          }}
+        >
           <div id="mapButton" className={classNames.mapButton}
             onClick={() => {
-              if (!mapOpened) {
-                SetMapOpened(true)
-                setTimeout(()=>SetfiltersActive(true), 1500)
-              }
-              else {
-                SetContactOpened(false)
-                if (!drawEnabled) {
-                  SetOnLayers({
-                    regions: false,
-                    municipals: false,
-                    settlement: false,
-                  })
-
-                  SetDrawEnabled(true)
-                  SetfiltersActive(false)
-                }
-                else {
-                  SetDrawEnabled(false)
-                }
-              }
+              mapButtonClick()
             }}
           >
             <p className={classNames.buttonTextPadding}>{mapOpened ? (drawEnabled?'Прекратить рисование':'Указать территорию') : 'Проверить вашу территорию'}</p>

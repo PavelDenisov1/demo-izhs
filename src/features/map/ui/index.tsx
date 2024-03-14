@@ -81,6 +81,7 @@ export const MapModule = (props: { onLayers: Layerfilters, setMapOpened:Function
         }
       });
     }
+  // eslint-disable-next-line
   }, [locations, location])
 
   useEffect(() => {
@@ -91,8 +92,15 @@ export const MapModule = (props: { onLayers: Layerfilters, setMapOpened:Function
         // console.log(loc.name)
       })
     }
-  }, [locations, featureClicked])
-  
+  }, [locations, featureClicked, navigate])
+
+  useEffect(() => {
+    if(featureClicked && id) {
+      let title = ''
+      if(featureClicked.getGeometry()) title = featureClicked.getGeometry().getProperties().territory_id
+      sendMetricAction(id, 'featureClick', title)
+    }
+  }, [id, featureClicked])
   
   useEffect(() => {
     if (draw) {
@@ -203,9 +211,6 @@ export const MapModule = (props: { onLayers: Layerfilters, setMapOpened:Function
           if (features.length === 1) {
             setFeatureClicked(features[0])
             props.setInfoBlock(features[0])
-            let title = ''
-            if(features[0].getGeometry()) title = features[0].getGeometry().getProperties().territory_id
-            id && sendMetricAction(id, 'featureClick', title)
           }
         }
       })
