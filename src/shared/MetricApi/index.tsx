@@ -26,7 +26,7 @@ export function sendMetricAction(clientID:number, action: string, info: string) 
     link = link + clientID + '&module=CadasterIZHS&type='+action+'&options[info]='+info
     fetch(link, { method: 'POST', mode: "no-cors" })
         .then(r => {
-            // console.log('Отправлено sendMetricAction');
+            console.log('Отправлено sendMetricAction ', action);
         })
 }
 
