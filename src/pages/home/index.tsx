@@ -101,7 +101,7 @@ export const Home = () => {
           >
             <p className={classNames.buttonTextPadding}>{mapOpened ? (drawEnabled?'Прекратить рисование':'Указать территорию') : 'Проверить вашу территорию'}</p>
           </div>
-          <MapModule onLayers={onLayers} mapOpened={mapOpened} drawEnabled={drawEnabled} setInfoBlock={setObjectClick} setContactState={setContactState}/>
+          <MapModule onLayers={onLayers} setMapOpened={SetMapOpened} mapOpened={mapOpened} drawEnabled={drawEnabled} setInfoBlock={setObjectClick} setContactState={setContactState}/>
         </div>
         <LayersFilter setOpened={filtersActive} layersActive={onLayers} setActive={setNewActiveArray}/>
         <div id='infoContainer' className={classNames.infoContainer}>
