@@ -29,9 +29,11 @@ export const FeatureInfo = (props: { info: { opened: boolean, feature: Feature |
     let properts = props.info?.feature?.getGeometry()?.getProperties()
     let array = []
     if (properts) {
-      console.log(properts);
+      let caption = (properts.level === 2) ? properts.municipalitet :
+        (properts.level === 3) ? properts.settlement : properts.region;
 
-      SetTerritoryName(properts.territory_id)
+      SetTerritoryName(caption)
+
       array = [
         { name: 'Количество нарушений', num: (properts.count || 0).toFixed(0), unit: "шт" },
         { name: 'Общая площадь', num: (properts.totalSquare || 0).toFixed(0), unit: "м²" },
