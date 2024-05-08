@@ -8,7 +8,7 @@ import { sendMetricAction } from "../../../shared/MetricApi"
 
 export const FeatureInfo = (props: { info: { opened: boolean, feature: Feature | null } | null, setContactState: Function }) => {
 
-  const [infoArray, SetInfoArray] = useState<Array<{ name: string, num: number|string }> | undefined>()
+  const [infoArray, SetInfoArray] = useState<Array<{ name: string, num: number | string, unit: string }> | undefined>()
   const [territoryName, SetTerritoryName] = useState<string>('')
   const [opened, SetOpened] = useState<boolean>(false)
   const id = useContext(UserContext).id
@@ -24,20 +24,20 @@ export const FeatureInfo = (props: { info: { opened: boolean, feature: Feature |
     document.getElementById('infoFeatureContainer') && (document.getElementById('infoFeatureContainer')!.className = classNames.infoContainer + ' ' + (opened ? classNames.opened : ''))
 
   }, [opened])
-  
 
   useEffect(() => {
     let properts = props.info?.feature?.getGeometry()?.getProperties()
     let array = []
     if (properts) {
+      console.log(properts);
+
       SetTerritoryName(properts.territory_id)
       array = [
-        { name: 'Налогооблагаемая площадь', num: properts.area_tax.toFixed(0) },
-        { name: 'Общая площадь', num: properts.area_total.toFixed(0) },
-        { name: 'Количество построек', num: properts.count.toFixed(0) },
-        { name: 'Оценка собираемого налога', num: properts.tax_extimate.toFixed(0) },
-        { name: 'Будут платить налоги', num: getRandomArbitrary(70, 95)+'%' },
-        { name: 'Ожидаемый доход в бюджет', num: getRandomArbitrary(1, 100) + ' тыщ мульонов' },
+        { name: 'Количество нарушений', num: (properts.count || 0).toFixed(0), unit: "шт" },
+        { name: 'Общая площадь', num: (properts.totalSquare || 0).toFixed(0), unit: "м²" },
+        { name: 'Налогооблагаемая площадь', num: (properts.taxSquare || 0).toFixed(0), unit: "м²" },
+        { name: 'Оценка общей кадастровой стоимости', num: (properts.totalCost / 1000000 || 0).toFixed(0), unit: "млн.руб." },
+        { name: 'Оценка дополнительного налога', num: (properts.totalTax || 0).toFixed(0), unit: "руб/год" }
       ]
       SetInfoArray(array)
     }
@@ -59,7 +59,11 @@ export const FeatureInfo = (props: { info: { opened: boolean, feature: Feature |
       }
 
       {infoArray?.map((line, i) => {
-        return <div key={'line' + i} className={classNames.infoElement}> <p className={classNames.infoTitle}>{line.name}</p> <p className={classNames.infoText}>{line.num}</p><img className={classNames.docIcon  + ' ' + (opened ? '' : classNames.noneOpacity )} src={Doc} alt="decorate icon"/></div>
+        return <div key={'line' + i} className={classNames.infoElement}>
+          <p className={classNames.infoTitle}>{line.name}</p>
+          <p className={classNames.infoText}>{line.num + (line.unit ? " " + line.unit : "")}</p>
+          <img className={classNames.docIcon + ' ' + (opened ? '' : classNames.noneOpacity)} src={Doc} alt="decorate icon" />
+        </div>
       })}
     </div>}
   </>

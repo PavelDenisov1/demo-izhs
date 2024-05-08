@@ -114,42 +114,38 @@ export const MapModule = (props: { onLayers: Layerfilters, setMapOpened:Function
 
     if (tiles && mapRef.current) {
       if (props.onLayers.regions && tiles.vectorLayerRegions.get)
-        check(mapRef.current, 'RN_1_143') && mapRef.current.addLayer(tiles.vectorLayerRegions)
+        check(mapRef.current, 'regions') && mapRef.current.addLayer(tiles.vectorLayerRegions)
       else
-        remove(mapRef.current, 'RN_1_143')
+        remove(mapRef.current, 'regions')
 
       if (props.onLayers.municipals && tiles.vectorLayerMunicipals.get)
-        check(mapRef.current, 'RN_1_144') && mapRef.current.addLayer(tiles.vectorLayerMunicipals)
+        check(mapRef.current, 'municipalitets') && mapRef.current.addLayer(tiles.vectorLayerMunicipals)
       else
-        remove(mapRef.current, 'RN_1_144')
+        remove(mapRef.current, 'municipalitets')
 
       if (props.onLayers.settlement && tiles.vectorLayerSettlement.get)
-        check(mapRef.current, 'RN_1_145') && mapRef.current.addLayer(tiles.vectorLayerSettlement)
+        check(mapRef.current, 'settlements') && mapRef.current.addLayer(tiles.vectorLayerSettlement)
       else
-        remove(mapRef.current, 'RN_1_145')
+        remove(mapRef.current, 'settlements')
     }
   }, [tiles, props, mapRef])
 
   useEffect(() => {
-    let tilesArray = getMvtLayers()
-    tilesArray.forEach(tile => {
-
-      switch (tile.get('name')) {
-        case 'RN_1_143':
-          tiles.vectorLayerRegions = tile
-          tile.setZIndex(5)
+    let layers = getMvtLayers()
+    layers.forEach(layer => {
+      switch (layer.get('name')) {
+        case 'regions':
+          tiles.vectorLayerRegions = layer
+          layer.setZIndex(5)         
           break;
-
-        case 'RN_1_144':
-          tiles.vectorLayerMunicipals = tile
-          tile.setZIndex(5)
+        case 'municipalitets':
+          tiles.vectorLayerMunicipals = layer
+          layer.setZIndex(5)
           break;
-
-        case 'RN_1_145':
-          tiles.vectorLayerSettlement = tile
-          tile.setZIndex(5)
+        case 'settlements':
+          tiles.vectorLayerSettlement = layer
+          layer.setZIndex(5)
           break;
-
         default:
           break;
       }
