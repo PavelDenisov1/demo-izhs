@@ -37,7 +37,7 @@ export const FeatureInfo = (props: { info: { opened: boolean, feature: Feature |
         { name: 'Общая площадь', num: (properts.totalSquare || 0).toFixed(0), unit: "м²" },
         { name: 'Налогооблагаемая площадь', num: (properts.taxSquare || 0).toFixed(0), unit: "м²" },
         { name: 'Оценка общей кадастровой стоимости', num: (properts.totalCost / 1000000 || 0).toFixed(0), unit: "млн.руб." },
-        { name: 'Оценка дополнительного налога', num: (properts.totalTax || 0).toFixed(0), unit: "руб/год" }
+        { name: 'Оценка дополнительного налога', num: (properts.totalTax / 1000000 || 0).toFixed(3), unit: "млн.руб/год" }
       ]
       SetInfoArray(array)
     }
