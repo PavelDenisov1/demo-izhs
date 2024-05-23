@@ -4,7 +4,7 @@ import User from '../../../shared/icons/user.svg'
 import { sendMetricContacts } from "../../../shared/MetricApi"
 import { UserContext } from "../../../App"
 
-export const GetContact = (props: { opened: boolean|string, setContactState: Function }) => {
+export const GetContact = (props: { opened: boolean|string, setContactState: Function, setDrawEnabled: Function }) => {
 
   const [opened, setOpened] = useState<boolean|string>(false)
   const [input, setInput] = useState<string>('')
@@ -38,6 +38,7 @@ export const GetContact = (props: { opened: boolean|string, setContactState: Fun
     console.log(user, id)
     id && sendMetricContacts(id, input)
     props.setContactState(false)
+    props.setDrawEnabled(false)
   }
   
   return <>{

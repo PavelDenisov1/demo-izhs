@@ -41,7 +41,7 @@ export const Home = () => {
 
   function setContactState(state:boolean, info: string|undefined){
     SetfiltersActive(false)
-    SetDrawEnabled(false)
+    // SetDrawEnabled(false)
     SetObjectClick(null)
     SetContactOpened(info? info : state)
   }
@@ -123,7 +123,7 @@ export const Home = () => {
           }
         </div>
         <FeatureInfo info={objectClick} setContactState={setContactState}/>
-        <GetContact opened={contactOpened} setContactState={setContactState}/>
+        <GetContact opened={contactOpened} setContactState={setContactState} setDrawEnabled={SetDrawEnabled}/>
       </div>
     </>
   );
