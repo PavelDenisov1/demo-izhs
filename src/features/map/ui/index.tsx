@@ -18,6 +18,7 @@ import { UserContext } from '../../../App';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getCenterCoordinates } from '../../../shared/RKApi';
 import { transform } from 'ol/proj';
+import VectorTileLayer from 'ol/layer/VectorTile';
 
 interface Layerfilters {
   regions: boolean,
@@ -37,6 +38,7 @@ export const MapModule = (props: { onLayers: Layerfilters, setMapOpened:Function
   const [drawLayer, setDrawLayer] = useState<VectorLayer<VectorSource> | undefined>()
   const id = useContext(UserContext).id
   let { location } = useParams();
+  const [selectionLayer, setSelectionLayer] = useState<VectorTileLayer>();
   const [locations, setLocations] = useState<[]|null>(null)
   const [featureClicked, setFeatureClicked] = useState<any>(null)
   const navigate = useNavigate()
@@ -111,22 +113,69 @@ export const MapModule = (props: { onLayers: Layerfilters, setMapOpened:Function
   }, [props.drawEnabled])
 
   useEffect(() => {
+    if (selectionLayer) {
+      selectionLayer.changed()
+    }
+  }, [selectionLayer])
+
+  useEffect(() => {
 
     if (tiles && mapRef.current) {
+      const selectedStyle = new Style({
+        stroke: new Stroke({
+            width: 3,
+            color: "#00FF00"
+        }),
+        fill: new Fill({
+            color: "#00FF0020"
+        })
+      });
+
+      const styleFunction = (feature: any) => {
+        if(featureClicked){
+          if((feature.get('level') === featureClicked.get('level'))
+            && (feature.get('count') === featureClicked.get('count'))
+            && (feature.get('extraTax') === featureClicked.get('extraTax'))
+            && (feature.get('totalCost') === featureClicked.get('totalCost'))
+            && (feature.get('totalSquare') === featureClicked.get('totalSquare'))){ 
+            return selectedStyle;
+          }
+        }
+      }
+
       if (props.onLayers.regions && tiles.vectorLayerRegions.get)
         check(mapRef.current, 'regions') && mapRef.current.addLayer(tiles.vectorLayerRegions)
-      else
+      else{
         remove(mapRef.current, 'regions')
+        setFeatureClicked(undefined)
+      }
 
       if (props.onLayers.municipals && tiles.vectorLayerMunicipals.get)
         check(mapRef.current, 'municipalitets') && mapRef.current.addLayer(tiles.vectorLayerMunicipals)
-      else
+      else{
         remove(mapRef.current, 'municipalitets')
+        setFeatureClicked(undefined)
+      }
 
       if (props.onLayers.settlement && tiles.vectorLayerSettlement.get)
         check(mapRef.current, 'settlements') && mapRef.current.addLayer(tiles.vectorLayerSettlement)
-      else
+      else{
         remove(mapRef.current, 'settlements')
+        setFeatureClicked(undefined)
+      }
+
+      selectionLayer?.setStyle(styleFunction)
+
+      if(!selectionLayer){
+        const newLayer = new VectorTileLayer({ 
+          map: mapRef.current,
+          renderMode: 'vector',
+          source: tiles.vectorLayerRegions.getSource(),
+          style: styleFunction
+        })
+        
+        setSelectionLayer(newLayer)
+      }
     }
   }, [tiles, props, mapRef])
 
@@ -214,6 +263,7 @@ export const MapModule = (props: { onLayers: Layerfilters, setMapOpened:Function
       let draw = new Draw({
         source: sourceDraw,
         type: "Polygon",
+        freehand: true,
         style: new Style({
           stroke: new Stroke({
             color: "black",
